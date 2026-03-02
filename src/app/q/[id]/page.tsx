@@ -1,10 +1,11 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getQuestion } from "@/lib/storage";
+import { getQuestion, getRecentQuestions } from "@/lib/storage";
 import { QACard } from "@/components/QACard";
 import { ShareButtons } from "@/components/ShareButtons";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -34,8 +35,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function QAPage({ params }: Props) {
   const { id } = await params;
-  const question = await getQuestion(id);
+  const [question, recentQuestions] = await Promise.all([
+    getQuestion(id),
+    getRecentQuestions(4),
+  ]);
   if (!question) notFound();
+
+  const others = recentQuestions.filter((q) => q.id !== id).slice(0, 3);
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ai.ezoai.jp";
   const pageUrl = `${siteUrl}/q/${id}`;
@@ -60,6 +66,18 @@ export default async function QAPage({ params }: Props) {
           <Button variant="outline">あなたも質問してみる</Button>
         </Link>
       </div>
+
+      {others.length > 0 && (
+        <>
+          <Separator />
+          <div className="space-y-4">
+            <h2 className="text-sm font-semibold text-slate-700">他のみんなの質問</h2>
+            {others.map((q) => (
+              <QACard key={q.id} question={q} showLink />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }
