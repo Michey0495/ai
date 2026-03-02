@@ -46,6 +46,7 @@ export function QuestionForm() {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder="マシュへの質問を入力してください（匿名）"
+        aria-label="質問を入力"
         maxLength={MAX_LENGTH}
         rows={4}
         className="resize-none text-sm"

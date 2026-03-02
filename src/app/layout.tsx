@@ -9,6 +9,7 @@ import { FeedbackWidget } from "@/components/FeedbackWidget";
 const geist = Geist({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://ai.ezoai.jp"),
   title: "AIマシュマロ — AIが匿名質問に個性的に回答",
   description: "匿名で質問するとAIキャラクター「マシュ」が個性的に回答します。気軽に聞いてみてください！",
   openGraph: {

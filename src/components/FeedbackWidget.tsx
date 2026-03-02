@@ -46,7 +46,7 @@ export function FeedbackWidget({ repoName }: { repoName: string }) {
     <div className="fixed bottom-4 right-4 w-80 bg-white border border-gray-200 rounded-xl shadow-2xl p-4 z-50">
       <div className="flex justify-between items-center mb-3">
         <h3 className="font-bold text-gray-800">フィードバック</h3>
-        <button onClick={() => setOpen(false)} className="text-gray-400 hover:text-gray-600">&times;</button>
+        <button onClick={() => setOpen(false)} className="text-gray-400 hover:text-gray-600" aria-label="閉じる">&times;</button>
       </div>
       {sent ? (
         <p className="text-green-600 text-center py-4">送信しました！ありがとうございます</p>
