@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AIマシュマロ 🍡
 
-## Getting Started
+匿名で質問するとAIキャラクター「マシュ」が個性的に回答するQ&Aサービス。
 
-First, run the development server:
+## 概要
+
+- 匿名で質問を投稿 → AIが即座に個性的な回答
+- 各回答に専用URLが発行されSNSでシェア可能
+- Twitter/X・LINEシェア対応
+
+## Tech Stack
+
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript (strict)
+- **Styling**: Tailwind CSS + shadcn/ui
+- **AI**: Anthropic Claude API (claude-haiku-4-5)
+- **Storage**: Vercel KV (開発時はin-memory)
+- **Hosting**: Vercel
+- **Domain**: ai.ezoai.jp
+
+## セットアップ
 
 ```bash
+npm install
+# .env.local に ANTHROPIC_API_KEY を設定
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 環境変数
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| 変数名 | 説明 | 必須 |
+|--------|------|------|
+| `ANTHROPIC_API_KEY` | Anthropic API Key | ✅ |
+| `KV_REST_API_URL` | Vercel KV URL (本番) | - |
+| `KV_REST_API_TOKEN` | Vercel KV Token (本番) | - |
+| `NEXT_PUBLIC_SITE_URL` | サイトURL | - |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## ディレクトリ構造
 
-## Learn More
+```
+src/
+  app/
+    page.tsx              # ホーム (質問フォーム + 一覧)
+    about/page.tsx        # サービス説明
+    q/[id]/page.tsx       # Q&A詳細 (シェアページ)
+    api/questions/        # API Routes
+  components/
+    Header.tsx / Footer.tsx
+    QuestionForm.tsx      # 質問投稿フォーム
+    QACard.tsx            # Q&Aカード
+    ShareButtons.tsx      # SNSシェアボタン
+  lib/
+    ai.ts                 # Anthropic API
+    storage.ts            # Vercel KV / in-memory
+    types.ts              # 型定義
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 進捗
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [x] プロジェクト初期化 (Night 1)
+- [x] アーキテクチャ設計
+- [x] 共通コンポーネント
+- [x] ページ実装 (Home / Q&A詳細 / About)
+- [x] API Routes (質問投稿・一覧・詳細)
+- [ ] Vercelデプロイ
+- [ ] ドメイン設定 (ai.ezoai.jp)
