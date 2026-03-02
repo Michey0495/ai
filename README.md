@@ -34,6 +34,8 @@ npm run dev
 | `KV_REST_API_URL` | Vercel KV URL (本番) | - |
 | `KV_REST_API_TOKEN` | Vercel KV Token (本番) | - |
 | `NEXT_PUBLIC_SITE_URL` | サイトURL | - |
+| `NEXT_PUBLIC_GA_ID` | Google Analytics ID | - |
+| `GITHUB_TOKEN` | フィードバックをGitHub Issueに投稿 | - |
 
 ## ディレクトリ構造
 
@@ -62,5 +64,7 @@ src/
 - [x] 共通コンポーネント
 - [x] ページ実装 (Home / Q&A詳細 / About)
 - [x] API Routes (質問投稿・一覧・詳細)
+- [x] フィードバックウィジェット & `/api/feedback` (Night 2)
+- [x] Google Analytics サポート (NEXT_PUBLIC_GA_ID) (Night 2)
 - [ ] Vercelデプロイ
 - [ ] ドメイン設定 (ai.ezoai.jp)
