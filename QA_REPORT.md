@@ -1,6 +1,6 @@
 # QA Report — AIマシュマロ
 
-**Date:** 2026-03-01
+**Date:** 2026-03-01 (Updated: 2026-03-01 16:45)
 **Tester:** Claude QA Agent
 **Project:** ai-marshmallow (`/Users/lily/Desktop/dev/02dev/ai`)
 
@@ -16,7 +16,7 @@
 
 ---
 
-## Issues Found & Fixed
+## Issues Found & Fixed (Round 1)
 
 ### 1. Missing custom 404 page [FIXED]
 - **Severity:** Medium
@@ -58,13 +58,36 @@
 
 ---
 
+## Issues Found & Fixed (Round 2)
+
+### 8. About page title — template duplication [FIXED]
+- **Severity:** Medium — SEO/UX
+- **File:** `src/app/about/page.tsx`
+- **Root cause:** Title was set to `"このサービスについて | AIマシュマロ"` but the root layout defines `title.template: "%s | AIマシュマロ"`. Next.js would apply the template, producing `"このサービスについて | AIマシュマロ | AIマシュマロ"` (duplicate suffix).
+- **Fix:** Changed to `title: "このサービスについて"` — template now correctly produces `"このサービスについて | AIマシュマロ"`.
+
+### 9. FeedbackWidget textarea — missing aria-label [FIXED]
+- **Severity:** Low — accessibility
+- **File:** `src/components/FeedbackWidget.tsx`
+- **Fix:** Added `aria-label="フィードバック内容"` to the feedback textarea.
+
+### 10. Q&A detail page — wrong Twitter card type [FIXED]
+- **Severity:** Low-Medium — SNS preview quality
+- **File:** `src/app/q/[id]/page.tsx`
+- **Root cause:** Twitter card type was `"summary"` (small square image) but the `/q/[id]/opengraph-image` generates a 1200×630 landscape image, which requires `"summary_large_image"`.
+- **Fix:** Changed `twitter.card` to `"summary_large_image"` to properly display the large OGP image on Twitter/X shares.
+
+---
+
 ## Issues Confirmed OK (No Fix Needed)
 
 | Area | Status | Notes |
 |------|--------|-------|
 | Input validation | ✅ | 280 char limit enforced on both client and server |
-| Error state display | ✅ | QuestionForm shows error messages |
+| Error state display | ✅ | QuestionForm shows error messages via sonner toast |
 | Loading state | ✅ | Button shows "マシュが考え中…" during API call |
+| Loading skeleton — home | ✅ | `src/app/loading.tsx` with animate-pulse skeletons |
+| Loading skeleton — Q page | ✅ | `src/app/q/[id]/loading.tsx` with animate-pulse skeletons |
 | Responsive layout | ✅ | `max-w-2xl mx-auto px-4` — works mobile to desktop |
 | Favicon | ✅ | `src/app/favicon.ico` exists |
 | Lang attribute | ✅ | `<html lang="ja">` set |
@@ -72,12 +95,16 @@
 | Special character handling | ✅ | `whitespace-pre-wrap break-words` on answer/question text |
 | Long text handling | ✅ | `break-words` prevents overflow; server truncates OGP text |
 | API input sanitization | ✅ | `trim()` applied, type checked, length validated |
+| Rate limiting | ✅ | IP-based rate limiting implemented in `/api/questions` |
 | In-memory fallback | ✅ | Works without KV env vars (dev/staging) |
 | KV production storage | ✅ | Conditional import of `@vercel/kv` |
 | GA integration | ✅ | Conditional on `NEXT_PUBLIC_GA_ID` env var |
 | SNS share URLs | ✅ | Properly encoded with `encodeURIComponent` |
 | `noopener noreferrer` | ✅ | On all external `target="_blank"` links |
-| Per-question metadata | ✅ | `generateMetadata` on `/q/[id]` for Twitter card |
+| Per-question metadata | ✅ | `generateMetadata` on `/q/[id]` for SEO |
+| JSON-LD structured data | ✅ | WebApplication schema in root layout |
+| 404 page | ✅ | Custom `not-found.tsx` with branded UI |
+| About page | ✅ | Proper metadata, clear service description |
 
 ---
 
@@ -85,10 +112,7 @@
 
 | Item | Priority | Notes |
 |------|----------|-------|
-| Rate limiting on `/api/questions` | Medium | No rate limiting; could be spammed. Mitigated by AI cost. Add if needed post-launch. |
 | Content moderation | Low | SYSTEM_PROMPT instructs model but no hard filter. Monitor post-launch. |
-| `loading.tsx` route files | Low | Suspense handles home page; individual Q page loads fast enough. |
-| Structured data (JSON-LD) | Low | Not required for MVP |
 
 ---
 
@@ -96,15 +120,19 @@
 
 - [x] `npm run build` 成功
 - [x] `npm run lint` エラーなし
+- [x] TypeScript エラーなし
 - [x] レスポンシブ対応（モバイル・デスクトップ）
 - [x] favicon 設定済み
 - [x] OGP画像設定済み（ImageResponse による動的生成）
 - [x] 404ページ
-- [x] ローディング状態の表示
+- [x] ローディングスケルトン（ホーム・Q&A詳細）
 - [x] エラー状態の表示
 - [x] robots.txt / sitemap.xml
 - [x] 基本的なa11y対応（aria-label）
+- [x] SEO メタデータ（title / description / OGP / Twitter card）
+- [x] JSON-LD 構造化データ
+- [x] レート制限
 
 ---
 
-**総評:** MVPとして本番リリース可能な品質。主要なSEO・アクセシビリティ・UX問題はすべて修正済み。
+**総評:** MVPとして本番リリース可能な品質。今回のRound 2でSEO・アクセシビリティ・SNSプレビューの細かな問題を追加修正。すべてのチェックリスト項目をクリア。

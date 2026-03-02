@@ -69,6 +69,7 @@ export function FeedbackWidget({ repoName }: { repoName: string }) {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="ご意見をお聞かせください..."
+            aria-label="フィードバック内容"
             className="w-full border border-gray-200 rounded-lg p-2 text-sm h-24 resize-none mb-3"
           />
           <button

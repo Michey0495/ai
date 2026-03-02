@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "このサービスについて | AIマシュマロ",
+  title: "このサービスについて",
   description: "AIマシュマロは匿名で質問を送るとAIが個性的に回答するQ&Aサービスです。",
 };
 
